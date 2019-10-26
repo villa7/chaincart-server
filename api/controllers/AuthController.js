@@ -41,16 +41,36 @@ module.exports = {
     })(req, res, next)
   },
   token: async (req, res, next) => {
-    const username = req.body.username
-    const password = req.body.password
+    let u
+    let createRefreshToken = true
+    const { jwtSign, jwtVerify } = await boxes.helpers.crypto()
+    if (req.body.grant_type === 'password') {
+      const username = req.body.username
+      const password = req.body.password
 
-    const u = await User.findOne({ email: username })
-    if (!u) throw new HttpError(404, 'User not found')
-    const p = await Passport.findOne({ user: u.id })
-    if (!p) throw new HttpError(401, 'No password set')
+      u = await User.findOne({ email: username })
+      if (!u) throw new HttpError(404, 'User not found')
+      const p = await Passport.findOne({ user: u.id })
+      if (!p) throw new HttpError(401, 'No password set')
 
-    if (!(await p.validatePassword(password))) {
-      throw new HttpError(400, 'Incorrect password')
+      if (!(await p.validatePassword(password))) {
+        throw new HttpError(400, 'Incorrect password')
+      }
+
+    } else if (req.body.grant_type === 'refresh_token') {
+      try {
+        const data = await jwtVerify(req.body.refresh_token)
+        u = await User.findOne({ id: data.sub })
+        const matchingToken = await RefreshToken.findOne({ user: u, token: data.token })
+        if (!matchingToken) throw new Error('matching token not found')
+        createRefreshToken = false
+      } catch (e) {
+        // Log.e(TAG, e)
+        throw new HttpError(400, 'Invalid refresh token')
+      }
+
+    } else {
+      throw new HttpError(400, 'Invalid grant_type')
     }
 
     const now = +(Date.now() / 1000).toFixed(0)
@@ -64,20 +84,22 @@ module.exports = {
       token_type: 'bearer',
       scope: 'user.account'
     }
-    const { jwtSign } = await boxes.helpers.crypto()
     
-    const tok = await RefreshToken.create({
-      user: u
-    })
     const accessToken = await jwtSign(jwt)
-    const refreshToken = await jwtSign({
-      access_token: accessToken,
-      token: tok.token,
-      exp: now + (60 * 60 * 24 * 7), // 1 week refresh token expiration
-      iat: now,
-      sub: u.id,
-      id: uuid()
-    })
+    let refreshToken
+    if (createRefreshToken) {
+      const tok = await RefreshToken.create({
+        user: u
+      })
+      refreshToken = await jwtSign({
+        access_token: accessToken,
+        token: tok.token,
+        exp: now + (60 * 60 * 24 * 7), // 1 week refresh token expiration
+        iat: now,
+        sub: u.id,
+        id: uuid()
+      })
+    }
     return res.json({
       access_token: accessToken,
       refresh_token: refreshToken

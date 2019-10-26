@@ -3,5 +3,5 @@ module.exports = {
   'POST /register': 'Auth#register',
   'POST /recover-password': 'Auth#recover',
 
-  'GET /api/me': 'User#me'
+  'POST /stores/create': 'Store#create'
 }

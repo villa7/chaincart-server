@@ -1,7 +1,7 @@
-/* global boxes User */
+/* global boxes User HttpError */
 module.exports = async (req, res, next) => {
-  try {
-    if (req.headers && req.headers.authorization) {
+  if (req.headers && req.headers.authorization) {
+    try {
       const { jwtVerify } = await boxes.helpers.crypto()
       const header = req.headers.authorization.substr(7)
       const data = await jwtVerify(header)
@@ -10,16 +10,11 @@ module.exports = async (req, res, next) => {
       req.login(user, () => {
         next()
       })
-    } else {
-      throw new Error('missing authorization header')
+    } catch (e) {
+      // Log.e('err', e)
+      throw new HttpError(400, 'invalid authorization header')
     }
-  } catch (e) {
-    if (req.xhr) {
-      res.json({
-        error: e.message
-      })
-    } else {
-      res.redirect('/')
-    }
+  } else {
+    throw new HttpError(400, 'missing authorization header')
   }
 }

@@ -80,8 +80,8 @@ module.exports = class BoxServer {
             let globalPolicy = []
             let actionPolicies = []
             if (this.policies[controller]) {
-              globalPolicy = this.policies[controller]['*'] || []
-              actionPolicies = this.policies[controller][action] || []
+              globalPolicy = (this.policies[controller]['*'] || []).map(f => errorHandler(f))
+              actionPolicies = (this.policies[controller][action] || []).map(f => errorHandler(f))
             }
 
             this.app[verb](pth,
