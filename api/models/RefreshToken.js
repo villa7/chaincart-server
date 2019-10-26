@@ -13,7 +13,7 @@ module.exports = {
   beforeCreate: async (token) => {
     const { generateToken } = await boxes.helpers.crypto()
     const now = +(Date.now() / 1000).toFixed(0)
-    token.expires_at = now + (60 * 1000 * 24 * 7)
+    token.expires_at = now + (60 * 60 * 24 * 7)
     token.token = await generateToken({ bytes: 48 })
   }
 }

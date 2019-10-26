@@ -14,12 +14,13 @@ module.exports = {
   refreshToken: 'string',
 
   validatePassword: async function (pass) {
-    const valid = await bcrypt.compare(pass, this.identifier)
-    return valid
+    return bcrypt.compare(pass, this.identifier)
   },
 
   beforeCreate: async function (self) {
-    const hashed = await bcrypt.hash(self.identifier, 10)
-    self.identifier = hashed
+    if (self.provider === 'local') {
+      const hashed = await bcrypt.hash(self.identifier, 10)
+      self.identifier = hashed
+    }
   }
 }

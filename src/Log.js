@@ -8,6 +8,7 @@ function stringify (str, html) {
       }
       cache.push(value)
     }
+    if (typeof value === 'function') return '[function]'
     return value
   }, 2)
 }
@@ -26,12 +27,15 @@ class Log {
   static d (tag, msg) {
     console.log(generateString('D', tag, msg))
   }
+
   static w (tag, msg) {
     console.warn(generateString('W', tag, msg))
   }
+
   static e (tag, msg) {
     console.error(generateString('E', tag, msg))
   }
+
   static i (tag, msg) {
     console.info(generateString('I', tag, msg))
   }

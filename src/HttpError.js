@@ -10,10 +10,10 @@ module.exports = class HttpError extends Error {
   }
 
   http (res) {
-    return res.json({
+    return res.status(this.status).json({
       status: this.status,
       message: this.message,
       hint: this.hint ? this.hint : undefined
-    }).status(this.status)
+    })
   }
 }

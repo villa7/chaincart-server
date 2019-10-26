@@ -21,17 +21,18 @@ const debugMiddleware = (v, c, a, p) => (re, rq, n) => {
   Log.d(TAG, `Handling ${v.toUpperCase()} ${p} (${c}#${a})`)
   n()
 }
+
 const errorHandler = (func) => async (req, res, next) => {
   try {
-    await func(req, res, next)
+    return await func(req, res, next)
   } catch (e) {
     if (e instanceof HttpError) {
       return e.http(res)
     } else {
-      return res.json({
+      return res.status(500).json({
         status: 500,
         message: e.toString()
-      }).status(500)
+      })
     }
   }
 }

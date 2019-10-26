@@ -74,7 +74,7 @@ function bindModel (name, { beforeCreate, beforeUpdate, beforeDelete, ...desc })
         this[attr] = vals[attr]
         this.__dirty[attr] = false
       }
-      for (const met in obj.methods) {
+      for (const met in { ...obj.methods }) {
         this[met] = obj.methods[met].bind(this)
       }
 

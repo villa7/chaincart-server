@@ -16,7 +16,7 @@ exports.up = function (knex, Promise) {
       t.bigInteger('created_at')
       t.bigInteger('updated_at')
     }),
-    knex.schema.createTable('refresh_tokens', t => {
+    knex.schema.createTable('refresh_token', t => {
       t.increments('id').primary()
       t.integer('user').unsigned().references('user.id').onDelete('CASCADE').onUpdate('CASCADE')
       t.string('token')
@@ -31,6 +31,6 @@ exports.down = function (knex, Promise) {
   return Promise.all([
     knex.schema.dropTable('passport'),
     knex.schema.dropTable('user'),
-    knex.schema.dropTable('refresh_tokens')
+    knex.schema.dropTable('refresh_token')
   ])
 }
