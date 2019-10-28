@@ -3,6 +3,12 @@ module.exports = {
     me: [ 'tokenAuth' ]
   },
   StoreController: {
-    create: [ 'tokenAuth' ]
+    '*': [ 'tokenAuth' ]
+  },
+  ProductController: {
+    '*': [ 'tokenAuth' ]
+  },
+  PurchaseController: {
+    '*': [ 'tokenAuth' ]
   }
 }

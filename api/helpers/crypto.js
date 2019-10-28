@@ -1,6 +1,9 @@
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 
+const Hashids = require('hashids/cjs')
+const hashids = new Hashids(process.env.HASHIDS_SECRET || 'salty salt', 8)
+
 function hmacSign (header, payload) {
   const value = `${header}:${payload}`
   const secret = process.env.HMAC_SECRET
@@ -37,9 +40,21 @@ function jwtVerify (token) {
     })
   })
 }
+
+function hash (i) {
+  if (typeof i !== 'number') throw new Error('hashids.encode expects a number')
+  return hashids.encode(i)
+}
+
+function unhash (str) {
+  if (typeof str !== 'string') throw new Error('hashids.decode expects a hash')
+  return hashids.decode(str)[0]
+}
 module.exports = {
   hmacSign,
   generateToken,
   jwtSign,
-  jwtVerify
+  jwtVerify,
+  hash,
+  unhash
 }

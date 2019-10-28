@@ -31,7 +31,7 @@ const errorHandler = (func) => async (req, res, next) => {
     } else {
       return res.status(500).json({
         status: 500,
-        message: e.toString()
+        message: req.headers.origin.indexOf('localhost') > -1 ? e.toString() : ''
       })
     }
   }
@@ -51,7 +51,7 @@ module.exports = class BoxServer {
 
     app.options('/*', function (req, res, next) {
       res.header('Access-Control-Allow-Origin', ['http://localhost:8080', 'http://localhost:3000'].indexOf(req.headers.origin) > -1 ? req.headers.origin : '')
-      res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+      res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,PATCH,DELETE,OPTIONS')
       res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With')
       res.sendStatus(200)
     })
