@@ -63,7 +63,7 @@ module.exports = class BoxServer {
     await this.loadHelpers()
 
     server.listen(PORT, () => {
-      Log.d(TAG, `Express running on :${PORT}`)
+      Log.i(TAG, `Express running on :${PORT}`)
     })
   }
 

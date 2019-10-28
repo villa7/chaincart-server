@@ -10,5 +10,8 @@ module.exports = {
   },
   PurchaseController: {
     '*': [ 'tokenAuth' ]
+  },
+  DiscountController: {
+    '*': [ 'tokenAuth' ]
   }
 }

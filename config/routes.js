@@ -14,4 +14,9 @@ module.exports = {
   'DELETE /stores/:id/products/:product': 'Product#delete',
 
   'GET /stores/:id/purchases': 'Purchase#list',
+
+  'GET /stores/:id/discounts': 'Discount#list',
+  'POST /stores/:id/discounts': 'Discount#create',
+  'PATCH /stores/:id/discounts/:discount': 'Discount#edit',
+  'DELETE /stores/:id/discounts/:discount': 'Discount#delete',
 }
