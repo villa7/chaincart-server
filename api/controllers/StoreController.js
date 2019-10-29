@@ -62,6 +62,18 @@ module.exports = {
     return res.json(store)
   },
   delete: async (req, res, next) => {
+    const { name } = req.body
+    if (name && !name.length) throw new HttpError(400, 'Storefront must have a name')
+    const { hash, unhash } = await boxes.helpers.crypto()
+    const storeID = unhash(req.params.id)
+    const store = await Storefront.findOne({ id: storeID, user: req.user })
+    if (!store) throw new HttpError(404, 'Storefront does not exist')
 
+    await store.delete()
+
+    return res.json({
+      status: 'ok',
+      storefrontID: req.params.id
+    })
   }
 }

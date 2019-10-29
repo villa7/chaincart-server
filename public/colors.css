@@ -1,0 +1,16 @@
+.ccart-cart {
+  background: {{ secondary }};
+  color: {{ secondaryText }};
+}
+
+header {
+  background: {{ primary }};
+  color: {{ primaryText }};
+}
+
+button {
+  background: {{ accent }};
+  color: {{ accentText }};
+}
+
+

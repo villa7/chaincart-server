@@ -29,9 +29,10 @@ const errorHandler = (func) => async (req, res, next) => {
     if (e instanceof HttpError) {
       return e.http(res)
     } else {
+      Log.e(TAG, e)
       return res.status(500).json({
         status: 500,
-        message: req.headers.origin.indexOf('localhost') > -1 ? e.toString() : ''
+        message: req.headers.origin && req.headers.origin.indexOf('localhost') > -1 ? e.toString() : ''
       })
     }
   }

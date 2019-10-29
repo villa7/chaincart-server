@@ -19,4 +19,11 @@ module.exports = {
   'POST /stores/:id/discounts': 'Discount#create',
   'PATCH /stores/:id/discounts/:discount': 'Discount#edit',
   'DELETE /stores/:id/discounts/:discount': 'Discount#delete',
+
+  'GET /cc/js': 'Embedder#embedder',
+  'GET /cc/app': 'Embedder#app',
+  'GET /cc/css': 'Embedder#css',
+  'GET /cc/custom-colors': 'Embedder#customColor',
+  'GET /cc/custom-direction': 'Embedder#customDirection',
+  'GET /cc/custom-style': 'Embedder#customStyle'
 }
