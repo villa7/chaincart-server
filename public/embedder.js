@@ -35,8 +35,14 @@
   customStyle.setAttribute('href', url + '/cc/custom-style?id=' + cart)
   head.appendChild(customStyle)
 
+  const stripeScript = document.createElement('script')
+  stripeScript.src = 'https://js.stripe.com/v3/'
+  stripeScript.setAttribute('async', true)
+  head.appendChild(stripeScript)
+
   const body = document.querySelector('body')
   const cartContainer = document.createElement('div')
   cartContainer.setAttribute('id', 'chaincart-container')
   body.appendChild(cartContainer)
+
 })(window.chainLayer)

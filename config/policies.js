@@ -1,17 +1,24 @@
 module.exports = {
   UserController: {
-    me: [ 'tokenAuth' ]
+    me: ['tokenAuth']
   },
   StoreController: {
-    '*': [ 'tokenAuth' ]
+    '*': ['tokenAuth']
   },
   ProductController: {
-    '*': [ 'tokenAuth' ]
+    list: ['tokenAuth'],
+    create: ['tokenAuth'],
+    edit: ['tokenAuth'],
+    delete: ['tokenAuth']
   },
   PurchaseController: {
-    '*': [ 'tokenAuth' ]
+    '*': ['tokenAuth']
   },
   DiscountController: {
-    '*': [ 'tokenAuth' ]
+    list: ['tokenAuth'],
+    create: ['tokenAuth'],
+    edit: ['tokenAuth'],
+    delete: ['tokenAuth'],
+    details: ['ipAuth']
   }
 }

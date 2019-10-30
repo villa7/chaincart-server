@@ -25,5 +25,7 @@ module.exports = {
   'GET /cc/css': 'Embedder#css',
   'GET /cc/custom-colors': 'Embedder#customColor',
   'GET /cc/custom-direction': 'Embedder#customDirection',
-  'GET /cc/custom-style': 'Embedder#customStyle'
+  'GET /cc/custom-style': 'Embedder#customStyle',
+
+  'GET /cc/:store/discount/:code': 'Discount#details',
 }
